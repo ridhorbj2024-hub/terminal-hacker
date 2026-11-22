@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semangat Kak Sasa // Laksana, LKP &amp; Garuda</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #13291d 0%, #060b08 78%);
+      color: #d8ffe6;
+      font-family: 'Courier New', Courier, monospace;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: rgba(8, 18, 13, 0.94);
+      border: 1px solid rgba(74, 222, 128, 0.45);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 0 28px rgba(34, 197, 94, 0.16);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #86efac;
+      border-bottom: 1px solid rgba(134, 239, 172, 0.2);
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge {
+      background: rgba(250, 204, 21, 0.14);
+      border: 1px solid rgba(250, 204, 21, 0.45);
+      color: #fde047;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .garuda-banner {
+      text-align: center;
+      padding: 12px;
+      margin-bottom: 18px;
+      border-radius: 10px;
+      background: rgba(250, 204, 21, 0.08);
+      border: 1px dashed rgba(250, 204, 21, 0.5);
+      color: #fde047;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .terminal-box {
+      min-height: 210px;
+      line-height: 1.8;
+      font-size: 15px;
+      color: #ecfdf5;
+      white-space: pre-wrap;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 9px;
+      height: 17px;
+      background-color: #4ade80;
+      margin-left: 3px;
+      vertical-align: middle;
+      animation: blink 0.9s infinite;
+    }
+
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    .actions {
+      margin-top: 22px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      flex: 1;
+      min-width: 140px;
+      padding: 11px 16px;
+      border-radius: 8px;
+      border: 1px solid #4ade80;
+      background: rgba(34, 197, 94, 0.16);
+      color: #bbf7d0;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      background: rgba(34, 197, 94, 0.3);
+      color: #ffffff;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #86efac;
+      opacity: 0.85;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="topbar">
+      <span>PESAN BUAT // KAK SASA</span>
+      <span class="badge">LAKSANA • LKP • GARUDA</span>
+    </div>
+
+    <div class="garuda-banner">
+      ✦ SEMANGAT TERUS KAK SASA ✦
+    </div>
+
+    <div class="terminal-box">
+      <span id="typedText"></span><span class="cursor"></span>
+    </div>
+
+    <div class="actions">
+      <button id="replayBtn" type="button">[ PUTAR ULANG PESAN ]</button>
+      <button id="instantBtn" type="button">[ TAMPILKAN SEMUA ]</button>
+    </div>
+
+    <div class="footer-note">
+      Pelan-pelan tapi pasti, semoga semuanya dilancarkan ya Kak.
+    </div>
+  </div>
+
+  <script>
+    const lines = [
+      "> Halooooo kakkk sasaaaa...",
+      "> Semangattt yaaaaaa ngurussss laksananyaaa samaa LKP!",
+      "> Trusssss semangat jugaaa buat Garudaanyaaaa!",
+      "> Jangann ngerahh kak sasaa yaaaaaa, tarik napas dulu dan jalan terus!"
+    ];
+
+    const typedEl = document.getElementById("typedText");
+    const replayBtn = document.getElementById("replayBtn");
+    const instantBtn = document.getElementById("instantBtn");
+
+    let lineIndex = 0;
+    let charIndex = 0;
+    let timerId = null;
+
+    function clearTimers() {
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+    }
+
+    function showAllText() {
+      clearTimers();
+      typedEl.textContent = lines.join("\n");
+    }
+
+    function typeNextChar() {
+      if (lineIndex >= lines.length) return;
+
+      const currentLine = lines[lineIndex];
+      if (charIndex < currentLine.length) {
+        typedEl.textContent += currentLine.charAt(charIndex);
+        charIndex++;
+        timerId = setTimeout(typeNextChar, 28);
+      } else {
+        lineIndex++;
+        charIndex = 0;
+        if (lineIndex < lines.length) {
+          typedEl.textContent += "\n";
+          timerId = setTimeout(typeNextChar, 300);
+        }
+      }
+    }
+
+    function startTyping() {
+      clearTimers();
+      typedEl.textContent = "";
+      lineIndex = 0;
+      charIndex = 0;
+      typeNextChar();
+    }
+
+    replayBtn.addEventListener("click", startTyping);
+    instantBtn.addEventListener("click", showAllText);
+
+    startTyping();
+  </script>
+</body>
+</html>
