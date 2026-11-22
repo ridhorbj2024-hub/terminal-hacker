@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal System</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #050505;
+      color: #00ff41;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 20px;
+      height: 100vh;
+      overflow-y: auto;
+      text-shadow: 0 0 5px #00ff41;
+    }
+
+    .header {
+      border-bottom: 1px solid #00ff41;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    #terminal {
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 16px;
+      background-color: #00ff41;
+      animation: blink 0.8s infinite;
+      vertical-align: middle;
+    }
+
+    .btn-hack {
+      margin-top: 25px;
+      background-color: transparent;
+      color: #00ff41;
+      border: 1px solid #00ff41;
+      padding: 10px 20px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(0, 255, 65, 0.4);
+      display: none; /* Muncul setelah teks selesai */
+    }
+
+    .btn-hack:active {
+      background-color: #00ff41;
+      color: #050505;
+    }
+
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <span>SYS_ROOT // ACCESS_V.4.0</span>
+    <span>STATUS: CONNECTED</span>
+  </div>
+
+  <!-- Area tempat teks muncul -->
+  <span id="terminal"></span><span class="cursor"></span>
+
+  <br>
+  <button id="btn-ulang" class="btn-hack" onclick="mulaiHack()">[ JALANKAN ULANG SISTEM ]</button>
+
+  <script>
+    const teksHacker = [
+      "> Menginisialisasi protokol keamanan...",
+      "> Mencari celah jaringan lokal [192.168.1.1]...",
+      "> Bypass firewall... [BERHASIL]",
+      "> Mengunduh data rahasia: file_rahasia.zip (100%)",
+      "> Menghapus jejak log aktivitas...",
+      "> AKSES DITERIMA. Selamat datang, Admin!"
+    ];
+
+    const terminal = document.getElementById("terminal");
+    const tombolUlang = document.getElementById("btn-ulang");
+    let baris = 0;
+    let huruf = 0;
+
+    function ketikTeks() {
+      if (baris < teksHacker.length) {
+        if (huruf < teksHacker[baris].length) {
+          terminal.innerHTML += teksHacker[baris].charAt(huruf);
+          huruf++;
+          setTimeout(ketikTeks, 35); // Kecepatan ketik (makin kecil makin cepat)
+        } else {
+          terminal.innerHTML += "\n";
+          baris++;
+          huruf = 0;
+          setTimeout(ketikTeks, 400); // Jeda antar baris
+        }
+      } else {
+        tombolUlang.style.display = "inline-block";
+      }
+    }
+
+    function mulaiHack() {
+      terminal.innerHTML = "";
+      tombolUlang.style.display = "none";
+      baris = 0;
+      huruf = 0;
+      ketikTeks();
+    }
+
+    // Jalankan otomatis saat halaman dibuka
+    mulaiHack();
+  </script>
+
+</body>
+</html>
